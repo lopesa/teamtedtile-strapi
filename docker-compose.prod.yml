@@ -1,12 +1,8 @@
-# path: ./docker-compose.yml
-
 version: "3"
 services:
   strapi:
     container_name: teamtedtile-strapi
-    # platform: linux/amd64
-    build: .
-    image: teamtedtile-strapi
+    image: registry.digitalocean.com/ld-container-registry/teamtedtile-strapi:latest
     restart: unless-stopped
     env_file: .env
     environment:
@@ -21,7 +17,7 @@ services:
       APP_KEYS: ${APP_KEYS}
       NODE_ENV: ${NODE_ENV}
     volumes:
-      # changing to only the one following line is from strapi v3 official
+      # changing to only the one following line (two with my addition of uploads) is from strapi v3 official
       # https://github.com/strapi/strapi-docker/blob/master/examples/prod/docker-compose.yml
       - ./app:/srv/app
       - ./public/uploads:/opt/app/public/uploads
@@ -44,11 +40,12 @@ services:
       MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
       MYSQL_PASSWORD: ${DATABASE_PASSWORD}
       MYSQL_DATABASE: ${DATABASE_NAME}
+      MYSQL_TCP_PORT: 3307
     volumes:
       - strapi-data:/var/lib/mysql
       #- ./data:/var/lib/mysql # if you want to use a bind folder
     ports:
-      - "3306:3306"
+      - "3307:3307"
     networks:
       - strapi
 
