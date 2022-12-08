@@ -4,33 +4,39 @@
   "info": {
     "singularName": "gallery-image",
     "pluralName": "gallery-images",
-    "displayName": "Gallery Image"
+    "displayName": "Gallery Image",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
-    "Title": {
+    "title": {
       "type": "string",
       "required": true,
       "maxLength": 150,
       "unique": true
-    },
-    "description": {
-      "type": "text"
     },
     "tedheadText": {
       "type": "string",
       "maxLength": 200
     },
     "image": {
-      "allowedTypes": [
-        "images"
-      ],
       "type": "media",
       "multiple": false,
-      "required": true
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "copyright": {
+      "type": "boolean",
+      "default": false
+    },
+    "forceOrder": {
+      "type": "integer",
+      "unique": true
     }
   }
 }
