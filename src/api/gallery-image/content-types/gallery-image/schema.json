@@ -30,13 +30,12 @@
         "images"
       ]
     },
-    "copyright": {
-      "type": "boolean",
-      "default": false
-    },
     "forceOrder": {
       "type": "integer",
       "unique": true
+    },
+    "copyright": {
+      "type": "string"
     }
   }
 }

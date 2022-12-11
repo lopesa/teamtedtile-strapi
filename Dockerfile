@@ -15,9 +15,10 @@ RUN yarn build
 # this should be port 9229 but it is taken
 # also sometimes so is 9230 and the debug happens on 9231
 # this is unstable at this commit
-ENV NODE_OPTIONS=--inspect=0.0.0.0:9230
+# ENV NODE_OPTIONS=--inspect=0.0.0.0:9230
 # idk if exposing 9230 here really does anything
 # unclear as of this git commit
 EXPOSE 1337 9230
 # https://blog.risingstack.com/how-to-debug-a-node-js-app-in-a-docker-container/
-CMD ["yarn", "develop"]
+CMD ["yarn", "develop:debug"]
+# CMD ["sleep","3600"]

@@ -3,28 +3,57 @@
  */
 
 import { factories } from "@strapi/strapi";
+import { ApiGalleryImageGalleryImage } from "../../../../schemas";
 
-// export default factories.createCoreController(
-//   "api::gallery-image.gallery-image"
-// );
+/**
+ *
+ * @param entries
+ * @returns ordered entries
+ *
+ * incorpoirates the forcedOrder setting
+ * ordering is 1st forcedOrder, then ID order
+ */
+const orderEntries = (
+  entries: ApiGalleryImageGalleryImage["attributes"][]
+): ApiGalleryImageGalleryImage["attributes"][] => {
+  const forceOrderSortedEntries = entries.reduce(
+    (acc, entry) => {
+      if (entry.forceOrder) {
+        acc[0].push(entry);
+      } else {
+        acc[1].push(entry);
+      }
+      return acc;
+    },
+    [[], []] // [0] = forceOrder, [1] = normal (ID order)
+  );
+
+  let finalEntries = forceOrderSortedEntries[1];
+
+  forceOrderSortedEntries[0].forEach((entry) => {
+    finalEntries.splice(entry.order, 0, entry);
+  });
+  return finalEntries;
+};
 
 export default factories.createCoreController(
   "api::gallery-image.gallery-image",
   ({ strapi }) => ({
     async find(ctx) {
-      const entries = await strapi.entityService.findMany(
-        "api::gallery-image.gallery-image",
-        {
-          sort: { createdAt: "ASC" },
-          limit: 5,
-          populate: "*",
-        }
-      );
+      // 1
+      const entries: ApiGalleryImageGalleryImage["attributes"][] =
+        await strapi.entityService.findMany(
+          "api::gallery-image.gallery-image",
+          {
+            sort: { createdAt: "ASC" },
+            populate: "*",
+          }
+        );
 
-      debugger;
+      let orderedEntries = orderEntries(entries);
 
       // 2
-      const sanitizedEntries = await this.sanitizeOutput(entries, ctx);
+      const sanitizedEntries = await this.sanitizeOutput(orderedEntries, ctx);
 
       // 3
       return this.transformResponse(sanitizedEntries);

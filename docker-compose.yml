@@ -29,8 +29,8 @@ services:
     ports:
       - "1337:1337"
       # - "5858:5858" # for debugging
-      - "9231:9231" # for debugging
       - "9230:9230" # for debugging
+      - "9231:9231" # for debugging
       # - "9229:9229" # for debugging
     networks:
       - strapi

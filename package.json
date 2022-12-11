@@ -5,6 +5,7 @@
   "description": "Team Ted Tile Strapi API and CMS",
   "scripts": {
     "develop": "strapi develop",
+    "develop:debug": "NODE_OPTIONS=--inspect=0.0.0.0:9230 strapi develop",
     "start": "strapi start",
     "build": "strapi build",
     "strapi": "strapi"
