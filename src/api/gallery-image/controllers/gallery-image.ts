@@ -40,6 +40,23 @@ export default factories.createCoreController(
   "api::gallery-image.gallery-image",
   ({ strapi }) => ({
     async find(ctx) {
+      // if a title is specified, return early with
+      // only the entry with that title (gallery pages)
+      if (ctx.query.filters?.title) {
+        const entry: ApiGalleryImageGalleryImage["attributes"] =
+          await strapi.entityService.findMany(
+            "api::gallery-image.gallery-image",
+            {
+              filters: {
+                title: ctx.query.filters.title.$eq,
+              },
+              populate: "*",
+            }
+          );
+        return this.transformResponse(entry);
+      }
+
+      // Standard Case - find all entries and order by forceOrder then ID
       // 1
       const entries: ApiGalleryImageGalleryImage["attributes"][] =
         await strapi.entityService.findMany(
@@ -50,6 +67,7 @@ export default factories.createCoreController(
           }
         );
 
+      // @TODO orderEntries can probably be replaced with dql or strapi multiple field ordering
       let orderedEntries = orderEntries(entries);
 
       // 2
