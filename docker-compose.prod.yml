@@ -2,7 +2,7 @@ version: "3"
 services:
   strapi:
     container_name: teamtedtile-strapi
-    image: registry.digitalocean.com/ld-container-registry/teamtedtile-strapi:latest
+    image: registry.digitalocean.com/ld-container-registry/teamtedtile-cms-api:latest
     restart: unless-stopped
     env_file: .env
     environment:
