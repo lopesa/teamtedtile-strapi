@@ -1,4 +1,4 @@
-FROM node:16
+FROM node:18
 # Installing libvips-dev for sharp Compatability
 # NOTE: DO NOT BUILD WITH LOCAL NODE MODULES
 # introduces a 'sharp' problem related to my m1 chip vs the docker image
