@@ -82,6 +82,7 @@ export default factories.createCoreController(
             sort: { createdAt: "ASC" },
             fields: ["title", "copyright", "forceOrder", "tedheadText"],
             populate: "image",
+            publicationState: "live",
           }
         );
 
