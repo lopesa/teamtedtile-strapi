@@ -4,7 +4,9 @@ version: "3"
 services:
   strapi:
     container_name: teamtedtile-strapi-dev
-    build: .
+    build:
+      context: .
+      no_cache: true
     image: teamtedtile-strapi-dev
     restart: unless-stopped
     env_file: .env
