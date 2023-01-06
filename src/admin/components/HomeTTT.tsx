@@ -33,22 +33,24 @@ function HomeSplash() {
     }
   }, [getApiUrlBase, CHECK_BUILD_ENVIRONMENT_READY_ENDPOINT]);
 
+  const doErrorProcesses = (errorMessage: string) => {
+    setError(errorMessage);
+    setDeployType(false);
+    setBuildStatus(false);
+  };
+
   const doNewDeploy = async (env: "production" | "staging") => {
     setBuildStatus("BUILDING");
     setDeployType(env);
     const res: any = await fetch(
       `${getApiUrlBase()}${DEPLOY_ENDPOINT}?env=${env}`
     ).catch((e) => {
-      setError(e.message);
-      setDeployType(false);
-      setBuildStatus(false);
+      doErrorProcesses(e.message);
       return;
     });
 
     if (!res?.ok) {
-      setError(res?.statusText);
-      setDeployType(false);
-      setBuildStatus(false);
+      doErrorProcesses(res?.statusText);
       return;
     }
     const decodedData = await res.json();
@@ -92,28 +94,30 @@ function HomeSplash() {
         color: "white",
       }}
     >
-      <h2>Welcome to the Team Ted Tile control panel!</h2>
+      <h2>
+        Welcome to the Team Ted Tile Content Managment System and Build Panel
+      </h2>
       <p>
         Here, you can change much of the site content. You can change items by
         clicking the "Content Manager" link in the sidebar to the left. From the
-        sub-bar from there you can link to the different contrent controls. The
+        sub-bar from there you can link to the different content controls. The
         items you can change include:<br></br>
         <ul>
           <li>
             <b>Gallery Content</b>
             <br></br>
-            change Gallery Items from the Gallery Image Collection Type link in
-            the left sub-sidebar. The images are required to have a title and an
-            image and note: THE IMAGE TITLE WILL BECOME ITS URL. It's best if
+            Change Gallery items from the Gallery Image Collection Type link in
+            the left sub-sidebar. The images are required to have a Title and an
+            Image and note: THE IMAGE TITLE WILL BECOME ITS URL. It's best if
             it's something human readable for the search engines. Also note: the
             image that you upload does not have to have any particular file
             name. (In the past version of this site, the image's name was used
-            as its url.) Other than the image you can add a copyright and
+            as its url.) Other than the image you can add a Copyright and
             "tedHeadText" (lol) which adds the little popover caption that has
             Ted's head as the icon
           </li>
           <li>
-            <b>About Page Content</b>
+            <b>About Page content</b>
           </li>
           <li>
             <b>Contact Page copy</b>
@@ -123,17 +127,17 @@ function HomeSplash() {
       <p>
         The final version of the site is "built" meaning even though the content
         data is determined from this CMS and is obviously variable, the site's
-        user won't have to wait for the browser to call this server to get that
-        data because in the build process we turn it back into static pages. The
-        process to do that is enacted from the two links below. The "Build Test"
-        action will build to a test url so you can see how your changes look and
-        get everything how you want. Do that as much as needed until that's the
-        case and then go ahead and "Build Live" and it will deploy the build to
-        the live url
+        user won't have to wait for the browser to call this server (Like
+        Wordpress etc.) to get that data because in the build process we turn it
+        back into static pages. The process to do that is enacted from the two
+        links below. The "Build Test" action will build to a test url so you can
+        see how your changes look and get everything how you want. Do that as
+        much as needed until that's the case and then go ahead and "Build Live"
+        and it will deploy the build to the live url
       </p>
       <hr style={{ marginTop: "35px" }}></hr>
       <h2>Deployment Actions</h2>
-      {/* <h4>Deploy to test environment</h4> */}
+
       {buildEnvIsReady && (
         <button onClick={() => doNewDeploy("staging")} style={buttonStyle}>
           Build Test Version
@@ -152,9 +156,6 @@ function HomeSplash() {
       )}
       {error && <p>Error: {error}</p>}
 
-      {/* <hr style={{ marginTop: "35px" }}></hr> */}
-
-      {/* <h4>Deploy to production</h4> */}
       {buildEnvIsReady && (
         <button onClick={() => doNewDeploy("production")} style={buttonStyle}>
           Build Live Version
@@ -172,6 +173,7 @@ function HomeSplash() {
           </a>
         </p>
       )}
+
       {error && <p>Error: {error}</p>}
       <h4>TODO: revert to most recent production version</h4>
     </div>
