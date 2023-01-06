@@ -11,6 +11,7 @@ module.exports = (config, webpack) => {
   /**
    * Overwrite the dashboard home Component
    */
+
   config.plugins.push(
     new webpack.NormalModuleReplacementPlugin(
       /.cache\/admin\/src\/pages\/HomePage\/index\.js/,

@@ -23,7 +23,8 @@ RUN yarn build
 # this is unstable at this commit
 # idk if exposing 9230 here really does anything
 # unclear as of this git commit
-EXPOSE 1337 9230
+EXPOSE 1337 9229 9230
 # https://blog.risingstack.com/how-to-debug-a-node-js-app-in-a-docker-container/
 # CMD ["sleep","3600"]
 CMD ["yarn", "develop:debug"]
+# CMD ["yarn", "develop"]

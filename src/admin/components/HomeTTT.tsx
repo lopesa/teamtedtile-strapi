@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 function HomeSplash() {
   const [stagingUrl, setStagingUrl] = useState<string | null>(null);
@@ -8,189 +8,80 @@ function HomeSplash() {
     boolean | "production" | "staging"
   >(false);
   const [error, setError] = useState<string | null>(null);
-  const [currentProdDeployDetails, setCurrentProdDeployDetails] =
-    useState<any>(null);
-  const vercelToken = process.env.REACT_APP_VERCEL_TOKEN;
-  const TTT_VERCEL_PROJECT_ID = process.env.REACT_APP_TTT_VERCEL_PROJECT_ID;
-  const GET_CURRENT_DEPLOYS_ENDPOINT = "https://api.vercel.com/v6/deployments";
+  const [buildEnvIsReady, setBuildEnvIsReady] = useState<boolean>(false);
+  const CHECK_BUILD_ENVIRONMENT_READY_ENDPOINT =
+    "/build/get-build-environment-is-ready";
+  const DEPLOY_ENDPOINT = "/build";
 
-  const MAKE_DEPLOY_API_ENDPT = "https://api.vercel.com/v13/deployments";
-  const GET_DEPLOY_DETAILS_API_ENDPT =
-    "https://api.vercel.com/v13/deployments/";
+  const getApiUrlBase = useCallback(() => {
+    // https://forum.strapi.io/t/not-able-to-access-dotenv-variables-in-the-strapi-admin-front-end-for-different-envs-5599/1751
+    // This is not something we will be able to do. THe NODE_ENV=production is required to build the admin panel correctly. It doesn’t recognize other env variables.
+    // return process.env.NODE_ENV === "development"
+    //   ? "http://localhost:1337"
+    //   : "https://api.teamtedtile.com";
+    return window?.location.hostname === "localhost"
+      ? "http://localhost:1337/api"
+      : "https://api.teamtedtile.com/api";
+  }, []);
 
-  const DEPLOY_STATUS_CHECK_MAX_TRIES = 30;
-  const DEPLOY_STATUS_CHECK_WAIT_TIME = 2000;
-
-  const doFetch = async (endpoint: string, config: any) => {
-    const response = await fetch(endpoint, config);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+  const getBuildEnvIsReady = useCallback(async () => {
+    const res = await fetch(
+      `${getApiUrlBase()}${CHECK_BUILD_ENVIRONMENT_READY_ENDPOINT}`
+    ).catch((e) => {});
+    if (res && res.ok) {
+      return await res.json();
     }
-    const decodedData = await response.json();
-    if (decodedData.error) {
-      throw new Error(decodedData.error.message);
-    }
-    return decodedData;
-  };
-
-  const GENERIC_CONFIG = useMemo(() => {
-    return {
-      headers: {
-        Authorization: "Bearer " + vercelToken,
-      },
-    };
-  }, [vercelToken]);
-
-  const getCurrentProdDeploy = useCallback(async () => {
-    const filterOutCurrentProdDeploy = (decodedData: any) => {
-      return decodedData.deployments
-        .filter(
-          (item: any) => item.target === "production" && item.state === "READY"
-        )
-        .sort((a: any, b: any) => b.createdAt - a.createdAt)[0];
-    };
-    const config = {
-      method: "get",
-      ...GENERIC_CONFIG,
-    };
-    let endpoint = `${GET_CURRENT_DEPLOYS_ENDPOINT}?projectId=${TTT_VERCEL_PROJECT_ID}`;
-    let decodedData = await doFetch(endpoint, config);
-    let currentProdDeploy = filterOutCurrentProdDeploy(decodedData);
-    if (!currentProdDeploy && decodedData.pagination?.next) {
-      let nextPageTimestamp = decodedData.pagination.next;
-      while (!currentProdDeploy && nextPageTimestamp) {
-        endpoint = `${GET_CURRENT_DEPLOYS_ENDPOINT}?projectId=${TTT_VERCEL_PROJECT_ID}&from=${nextPageTimestamp}`;
-        decodedData = await doFetch(endpoint, config);
-        currentProdDeploy = filterOutCurrentProdDeploy(decodedData);
-      }
-    }
-    return currentProdDeploy;
-  }, [GENERIC_CONFIG, TTT_VERCEL_PROJECT_ID]);
-
-  const getCurrentProdDeployDetails = useCallback(async () => {
-    const currentProdDeploy = await getCurrentProdDeploy().catch((e) => {
-      throw e;
-    });
-
-    if (!currentProdDeploy) {
-      throw new Error("No current production deploy found.");
-    }
-
-    const config = {
-      method: "get",
-      ...GENERIC_CONFIG,
-    };
-    const endpoint = `${GET_DEPLOY_DETAILS_API_ENDPT}${currentProdDeploy.uid}`;
-    const decodedData = await doFetch(endpoint, config);
-    return decodedData;
-  }, [GENERIC_CONFIG, getCurrentProdDeploy]);
-
-  const checkDeployStatusAction = async (deployId: string) => {
-    const config = {
-      method: "get",
-      ...GENERIC_CONFIG,
-    };
-    const endpoint = `${GET_DEPLOY_DETAILS_API_ENDPT}${deployId}`;
-    const decodedData = await doFetch(endpoint, config);
-    return decodedData;
-  };
-
-  const checkDeployStatus = (deployId: string) => {
-    return new Promise((resolve, reject) => {
-      let tries = 0;
-      const interval = setInterval(async () => {
-        const deployInfo = await checkDeployStatusAction(deployId).catch(
-          (e) => {
-            resolve("error");
-            clearInterval(interval);
-          }
-        );
-        if (deployInfo.status === "READY") {
-          resolve("built");
-          clearInterval(interval);
-        } else if (deployInfo.status === "ERROR") {
-          resolve("error");
-          clearInterval(interval);
-        } else {
-          setBuildStatus(deployInfo.status);
-        }
-        if (++tries >= DEPLOY_STATUS_CHECK_MAX_TRIES) {
-          resolve("error");
-          clearInterval(interval);
-        }
-      }, DEPLOY_STATUS_CHECK_WAIT_TIME);
-    });
-  };
+  }, [getApiUrlBase, CHECK_BUILD_ENVIRONMENT_READY_ENDPOINT]);
 
   const doNewDeploy = async (env: "production" | "staging") => {
-    if (!currentProdDeployDetails) {
-      throw new Error("problem getting current deployment info");
+    setBuildStatus("BUILDING");
+    setDeployType(env);
+    const res: any = await fetch(
+      `${getApiUrlBase()}${DEPLOY_ENDPOINT}?env=${env}`
+    ).catch((e) => {
+      setError(e.message);
+      setDeployType(false);
+      setBuildStatus(false);
+      return;
+    });
+
+    if (!res?.ok) {
+      setError(res?.statusText);
+      setDeployType(false);
+      setBuildStatus(false);
+      return;
     }
-    setBuildStatus(true);
-    const config = {
-      body: JSON.stringify({
-        name: "teamtedtile-staging",
-        deploymentId: currentProdDeployDetails.id,
-        gitSource: currentProdDeployDetails.gitSource,
-        target: env === "production" ? "production" : undefined,
-      }),
-      headers: {
-        Authorization: "Bearer " + vercelToken,
-      },
-      method: "post",
-    };
-    const decodedData = await doFetch(`${MAKE_DEPLOY_API_ENDPT}`, config);
-    const buildStatus = await checkDeployStatus(decodedData.id);
-    if (buildStatus === "built") {
-      switch (env) {
-        case "production":
-          // @TODO leave for now, not sure how the custom url will appear, so change then
-          setProdUrl(`${decodedData.name}.vercel.app`);
-          break;
-        case "staging":
-          setStagingUrl(decodedData.url);
-          break;
-      }
-    } else {
-      setError("something went wrong");
+    const decodedData = await res.json();
+    switch (env) {
+      case "production":
+        // @TODO leave for now, not sure how the custom url will appear, so change then
+        setProdUrl(`${decodedData.name}.vercel.app`);
+        break;
+      case "staging":
+        setStagingUrl(decodedData.url);
+        break;
     }
+    setDeployType(false);
     setBuildStatus(false);
   };
 
-  const doNewStagingDeploy = async () => {
-    setDeployType("staging");
-    doNewDeploy("staging")
-      .then(() => {
-        setDeployType(false);
-      })
-      .catch((e) => {
-        setError(e.message);
-        setDeployType(false);
-        setBuildStatus(false);
-      });
-  };
-  const doNewProductionDeploy = () => {
-    setDeployType("production");
-    doNewDeploy("production")
-      .then(() => {
-        setDeployType(false);
-      })
-      .catch((e) => {
-        setError(e.message);
-        setBuildStatus(false);
-      });
-  };
-
   useEffect(() => {
-    getCurrentProdDeployDetails()
-      .then((details) => {
-        setCurrentProdDeployDetails(details);
+    getBuildEnvIsReady()
+      .then((isReady) => {
+        setBuildEnvIsReady(isReady);
       })
       .catch((e) => {
-        setCurrentProdDeployDetails(null);
+        setBuildEnvIsReady(null);
         setError(e.message);
       });
-  }, [getCurrentProdDeployDetails]);
+  }, [getBuildEnvIsReady]);
+
+  const buttonStyle = {
+    border: "solid white",
+    padding: "5px",
+    backgroundColor: "grey",
+    display: "block",
+  };
 
   return (
     <div
@@ -243,8 +134,8 @@ function HomeSplash() {
       <hr style={{ marginTop: "35px" }}></hr>
       <h2>Deployment Actions</h2>
       {/* <h4>Deploy to test environment</h4> */}
-      {currentProdDeployDetails !== null && (
-        <button onClick={doNewStagingDeploy} style={{ display: "block" }}>
+      {buildEnvIsReady && (
+        <button onClick={() => doNewDeploy("staging")} style={buttonStyle}>
           Build Test Version
         </button>
       )}
@@ -264,11 +155,8 @@ function HomeSplash() {
       {/* <hr style={{ marginTop: "35px" }}></hr> */}
 
       {/* <h4>Deploy to production</h4> */}
-      {currentProdDeployDetails && (
-        <button
-          onClick={doNewProductionDeploy}
-          style={{ display: "block", marginTop: "30px" }}
-        >
+      {buildEnvIsReady && (
+        <button onClick={() => doNewDeploy("production")} style={buttonStyle}>
           Build Live Version
         </button>
       )}

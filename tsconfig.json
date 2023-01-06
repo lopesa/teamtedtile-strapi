@@ -3,7 +3,8 @@
   "compilerOptions": {
     "outDir": "dist",
     "rootDir": ".",
-    "lib": ["ES2015", "DOM"]
+    "lib": ["ES2015", "DOM"],
+    "sourceMap": true
   },
   "include": ["./", "./**/*.ts", "./**/*.js", "src/**/*.json"],
   "exclude": [
