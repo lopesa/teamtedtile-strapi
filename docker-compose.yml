@@ -33,6 +33,9 @@ services:
       # - "5858:5858" # for debugging
       - "9230:9230" # for debugging
       - "9231:9231" # for debugging
+      - "9232:9232" # for debugging
+      - "9233:9233" # for debugging
+      - "9234:9235" # for debugging
       # - "9229:9229" # for debugging
     networks:
       - strapi
