@@ -18,12 +18,8 @@ WORKDIR /opt/app/src/admin/components
 RUN tsc HomeTTT.tsx --module 'es2020' --esModuleInterop true --jsx react --moduleResolution node
 WORKDIR /opt/app
 RUN yarn build
-# this should be port 9229 but it is taken
-# also sometimes so is 9230 and the debug happens on 9231
-# this is unstable at this commit
-# idk if exposing 9230 here really does anything
-# unclear as of this git commit
-EXPOSE 1337 9229 9230
+# 25 onward in the following is for mail. Probably don't need them all
+EXPOSE 1337 9229 9230 25 465 587 2525
 # https://blog.risingstack.com/how-to-debug-a-node-js-app-in-a-docker-container/
 # CMD ["sleep","3600"]
 CMD ["yarn", "develop:debug"]

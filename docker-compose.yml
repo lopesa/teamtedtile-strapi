@@ -33,6 +33,10 @@ services:
       # - "5858:5858" # for debugging
       - "9229:9229" # for debugging
       - "9230:9230" # for debugging
+      - "25:25" # for email -> 2525
+      - "465:465"
+      - "587:587"
+      - "2525:2525"
     networks:
       - strapi
     depends_on:
