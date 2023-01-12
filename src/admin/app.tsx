@@ -1,5 +1,18 @@
+import Logo from "./extensions/ttt_logo.png";
+// import favicon from './extensions/favicon.png';
+// const favicon = './extensions/favicon.png';
+
 export default {
   config: {
+    auth: {
+      logo: Logo,
+    },
+    menu: {
+      logo: Logo,
+    },
+    // head: {
+    //   favicon: favicon,
+    // },
     locales: [
       // 'ar',
       // 'fr',
