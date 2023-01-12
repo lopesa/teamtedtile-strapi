@@ -36,6 +36,10 @@
     },
     "copyright": {
       "type": "string"
+    },
+    "tedHeadTextRich": {
+      "type": "richtext",
+      "maxLength": 100
     }
   }
 }
