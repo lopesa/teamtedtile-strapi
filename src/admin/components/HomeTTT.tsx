@@ -15,7 +15,7 @@ function HomeSplash() {
 
   const getApiUrlBase = useCallback(() => {
     // https://forum.strapi.io/t/not-able-to-access-dotenv-variables-in-the-strapi-admin-front-end-for-different-envs-5599/1751
-    // This is not something we will be able to do. THe NODE_ENV=production is required to build the admin panel correctly. It doesn’t recognize other env variables.
+    // "This is not something we will be able to do. THe NODE_ENV=production is required to build the admin panel correctly. It doesn’t recognize other env variables."
     // return process.env.NODE_ENV === "development"
     //   ? "http://localhost:1337"
     //   : "https://api.teamtedtile.com";
@@ -78,6 +78,13 @@ function HomeSplash() {
       });
   }, [getBuildEnvIsReady]);
 
+  const containerStyle = {
+    width: "80%",
+    maxWidth: "600px",
+    margin: "75px 0 0 75px",
+    color: "white",
+  };
+
   const buttonStyle = {
     border: "solid white",
     padding: "5px",
@@ -85,46 +92,68 @@ function HomeSplash() {
     display: "block",
   };
 
+  const h2Style = {
+    fontSize: "1.5em",
+    marginBottom: "0.8em",
+    lineHeight: "1.3em",
+  };
+
+  const h4Style = {
+    fontSize: "1.1em",
+    marginBottom: "0.6em",
+    lineHeight: "1.25em",
+  };
+
+  const pStyle = {
+    marginBottom: "0.6em",
+    lineHeight: "1.25em",
+  };
+
+  const ulStyle = {
+    marginTop: "0.6em",
+    marginBottom: "0.6em",
+  };
+
+  const liStyle = {
+    marginLeft: "1em",
+    marginBottom: "0.6em",
+  };
+
+  const bStyle = {
+    fontWeight: "bold",
+  };
+
   return (
-    <div
-      style={{
-        width: "80%",
-        maxWidth: "600px",
-        margin: "75px 0 0 75px",
-        color: "white",
-      }}
-    >
-      <h2>
-        Welcome to the Team Ted Tile Content Managment System and Build Panel
+    <div style={containerStyle}>
+      <h2 style={h2Style}>
+        Welcome to the Team Ted Tile Content Management System and Build Panel!
       </h2>
-      <p>
+      <p style={pStyle}>
         Here, you can change much of the site content. You can change items by
         clicking the "Content Manager" link in the sidebar to the left. From the
         sub-bar from there you can link to the different content controls. The
-        items you can change include:<br></br>
-        <ul>
-          <li>
-            <b>Gallery Content</b>
-            <br></br>
-            Change Gallery items from the Gallery Image Collection Type link in
-            the left sub-sidebar. The images are required to have a Title and an
-            Image and note: THE IMAGE TITLE WILL BECOME ITS URL. It's best if
-            it's something human readable for the search engines. Also note: the
-            image that you upload does not have to have any particular file
-            name. (In the past version of this site, the image's name was used
-            as its url.) Other than the image you can add a Copyright and
-            "tedHeadText" (lol) which adds the little popover caption that has
-            Ted's head as the icon
+        items you can change include:
+        <ul style={ulStyle}>
+          <li style={liStyle}>
+            <b style={bStyle}>• Gallery Content</b>: Change Gallery items from
+            the Gallery Image Collection Type link in the left sub-sidebar. The
+            images are required to have a Title and an Image and note: THE IMAGE
+            TITLE WILL BECOME ITS URL. It's best if it's something human
+            readable for the search engines. Also note: the image that you
+            upload does not have to have any particular file name. (In the past
+            version of this site, the image's name was used as its url.) Other
+            than the image you can add a Copyright and "tedHeadText" (lol) which
+            adds the little popover caption that has Ted's head as the icon
           </li>
-          <li>
-            <b>About Page content</b>
+          <li style={liStyle}>
+            <b style={bStyle}>• About Page content</b>
           </li>
-          <li>
-            <b>Contact Page copy</b>
+          <li style={liStyle}>
+            <b style={bStyle}>• Contact Page copy</b>
           </li>
         </ul>
       </p>
-      <p>
+      <p style={pStyle}>
         The final version of the site is "built" meaning even though the content
         data is determined from this CMS and is obviously variable, the site's
         user won't have to wait for the browser to call this server (Like
@@ -136,7 +165,7 @@ function HomeSplash() {
         and it will deploy the build to the live url
       </p>
       <hr style={{ marginTop: "35px" }}></hr>
-      <h2>Deployment Actions</h2>
+      <h2 style={h2Style}>Deployment Actions</h2>
 
       {buildEnvIsReady && (
         <button onClick={() => doNewDeploy("staging")} style={buttonStyle}>
@@ -147,7 +176,7 @@ function HomeSplash() {
         <p style={{ color: "red", fontWeight: "bold" }}>{buildStatus}</p>
       )}
       {stagingUrl && (
-        <p>
+        <p style={pStyle}>
           Preview Url:{" "}
           <a target="_blank" rel="noreferrer" href={`https://${stagingUrl}`}>
             {`https://${stagingUrl}`}
@@ -165,8 +194,10 @@ function HomeSplash() {
         <p style={{ color: "red", fontWeight: "bold" }}>{buildStatus}</p>
       )}
       {prodUrl && (
-        <p>
-          <b>Success! New version is live at the production url:</b>
+        <p style={pStyle}>
+          <b style={bStyle}>
+            Success! New version is live at the production url:
+          </b>
           <br></br>
           <a target="_blank" rel="noreferrer" href={`https://${prodUrl}`}>
             {`https://${prodUrl}`}
@@ -175,7 +206,7 @@ function HomeSplash() {
       )}
 
       {error && <p>Error: {error}</p>}
-      <h4>TODO: revert to most recent production version</h4>
+      <h4 style={h4Style}>TODO: revert to most recent production version</h4>
     </div>
   );
 }
