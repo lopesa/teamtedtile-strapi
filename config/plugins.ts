@@ -14,6 +14,7 @@ export default ({ env }) => ({
   upload: {
     config: {
       breakpoints: {
+        xxlarge: 4000,
         xlarge: 2000,
         large: 1000,
         medium: 750,
