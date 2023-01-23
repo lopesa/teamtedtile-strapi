@@ -16,7 +16,9 @@
       "type": "string",
       "required": true,
       "maxLength": 150,
-      "unique": true
+      "unique": true,
+      "regex": "^[a-z,0-9,\\s]+$",
+      "default": "::REPLACE THIS::  lowercase letters, numbers and spaces only, this will be the url of the slide"
     },
     "tedheadText": {
       "type": "string",
