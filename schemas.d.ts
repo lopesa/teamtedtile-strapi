@@ -629,10 +629,6 @@ export interface ApiGalleryImageGalleryImage extends CollectionTypeSchema {
       SetMinMaxLength<{
         maxLength: 150;
       }>;
-    tedheadText: StringAttribute &
-      SetMinMaxLength<{
-        maxLength: 200;
-      }>;
     image: MediaAttribute & RequiredAttribute;
     forceOrder: IntegerAttribute & UniqueAttribute;
     copyright: StringAttribute;

@@ -90,6 +90,7 @@ function HomeSplash() {
     padding: "5px",
     backgroundColor: "grey",
     display: "block",
+    marginBottom: "10px",
   };
 
   const h2Style = {
@@ -129,10 +130,13 @@ function HomeSplash() {
         Welcome to the Team Ted Tile Content Management System and Build Panel!
       </h2>
       <p style={pStyle}>
-        Here, you can change much of the site content. You can change items by
-        clicking the "Content Manager" link in the sidebar to the left. From the
-        sub-bar from there you can link to the different content controls. The
-        items you can change include:
+        Here, you can change much of the site content, and you can "build" the
+        site to make those changes live.
+      </p>
+      <p style={pStyle}>
+        You can change items by clicking the "Content Manager" link in the
+        sidebar to the left. From the sub-bar from there you can link to the
+        different content controls. The items you can change include:
         <ul style={ulStyle}>
           <li style={liStyle}>
             <b style={bStyle}>• Gallery Content</b>: Change Gallery items from
@@ -154,15 +158,16 @@ function HomeSplash() {
         </ul>
       </p>
       <p style={pStyle}>
-        The final version of the site is "built" meaning even though the content
+        The final version of the site is built, meaning even though the content
         data is determined from this CMS and is obviously variable, the site's
         user won't have to wait for the browser to call this server (Like
-        Wordpress etc.) to get that data because in the build process we turn it
-        back into static pages. The process to do that is enacted from the two
-        links below. The "Build Test" action will build to a test url so you can
-        see how your changes look and get everything how you want. Do that as
-        much as needed until that's the case and then go ahead and "Build Live"
-        and it will deploy the build to the live url
+        Wordpress, etc.) to get that data because in the build process we turn
+        it back into static pages, and we serve that to the user. The process to
+        do that is enacted from the two links below. The "Build Test" action
+        will build to a test url so you can see how your changes look and get
+        everything how you want. Do that as much as needed until that's the case
+        and then go ahead and "Build Live" and it will deploy the build to the
+        live url
       </p>
       <hr style={{ marginTop: "35px" }}></hr>
       <h2 style={h2Style}>Deployment Actions</h2>

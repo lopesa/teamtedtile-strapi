@@ -62,7 +62,6 @@ const parseEntriesForReturn = (
     newObj["title"] = entry.title;
     newObj["image"] = entry.image;
     newObj["copyright"] = entry.copyright;
-    newObj["tedheadText"] = entry.tedheadText;
     newObj["tedHeadTextRich"] = entry.tedHeadTextRich;
     newObj["previous"] = entries[index - 1] ? entries[index - 1] : null;
     newObj["next"] = entries[index + 1] ? entries[index + 1] : null;
@@ -81,13 +80,7 @@ export default factories.createCoreController(
           "api::gallery-image.gallery-image",
           {
             sort: { createdAt: "ASC" },
-            fields: [
-              "title",
-              "copyright",
-              "forceOrder",
-              "tedheadText",
-              "tedHeadTextRich",
-            ],
+            fields: ["title", "copyright", "forceOrder", "tedHeadTextRich"],
             populate: "image",
             publicationState: "live",
           }

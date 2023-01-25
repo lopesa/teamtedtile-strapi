@@ -20,10 +20,6 @@
       "regex": "^[a-z,0-9,\\s]+$",
       "default": "::REPLACE THIS::  lowercase letters, numbers and spaces only, this will be the url of the slide"
     },
-    "tedheadText": {
-      "type": "string",
-      "maxLength": 200
-    },
     "image": {
       "type": "media",
       "multiple": false,

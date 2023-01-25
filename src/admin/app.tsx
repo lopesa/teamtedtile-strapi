@@ -1,6 +1,5 @@
 import Logo from "./extensions/ttt_logo.png";
-// import favicon from './extensions/favicon.png';
-// const favicon = './extensions/favicon.png';
+import favicon from "./extensions/ttt_logo_favicon.png";
 
 export default {
   config: {
@@ -10,9 +9,9 @@ export default {
     menu: {
       logo: Logo,
     },
-    // head: {
-    //   favicon: favicon,
-    // },
+    head: {
+      favicon: favicon,
+    },
     locales: [
       // 'ar',
       // 'fr',
