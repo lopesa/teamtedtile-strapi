@@ -12,7 +12,7 @@ RUN yarn config set network-timeout 600000 -g && yarn install
 WORKDIR /opt/app
 COPY ./ .
 # convert the custom Home Page tsx to js as it gets slotted in after the webpack build, I believe
-# regardless of order the typescript isnt parsed as part of the strapi build. The addition of the
+# regardless of order the typescript isnt parsed as part of the strapi build. The following addition of the
 # page via webpack is a Hack.
 WORKDIR /opt/app/src/admin/components
 RUN tsc HomeTTT.tsx --module 'es2020' --esModuleInterop true --jsx react --moduleResolution node

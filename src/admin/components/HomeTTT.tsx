@@ -23,9 +23,13 @@ function HomeSplash() {
     // return process.env.NODE_ENV === "development"
     //   ? "http://localhost:1337"
     //   : "https://api.teamtedtile.com";
-    return window?.location.hostname === "localhost"
-      ? "http://localhost:1337/api"
-      : "https://api.teamtedtile.com/api";
+
+    // @TODO this won't work because it's localhost on prod too
+    // return window?.location.hostname === "localhost"
+    //   ? "http://localhost:1337/api"
+    //   : "https://api.teamtedtile.com/api";
+    return "http://localhost:1337/api";
+    // return "https://api.teamtedtile.com/api";
   }, []);
 
   const getBuildEnvIsReady = useCallback(async () => {
