@@ -23,6 +23,10 @@ services:
       - ./public/uploads:/opt/app/public/uploads
     ports:
       - "1337:1337"
+      - "25:25" # for email 25, 465, 587, 2525 all possible
+      - "465:465"
+      - "587:587"
+      - "2525:2525"
     networks:
       - strapi
     depends_on:
@@ -45,6 +49,7 @@ services:
       MYSQL_TCP_PORT: 3307
     volumes:
       - strapi-data:/var/lib/mysql
+      - ./scripts:/scripts
       #- ./data:/var/lib/mysql # if you want to use a bind folder
     ports:
       - "3307:3307"

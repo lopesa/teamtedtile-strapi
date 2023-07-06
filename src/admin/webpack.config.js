@@ -12,11 +12,20 @@ module.exports = (config, webpack) => {
    * Overwrite the dashboard home Component
    */
 
+  // config.plugins.push(
+  //   new webpack.NormalModuleReplacementPlugin(
+  //     /.cache\/admin\/src\/pages\/HomePage\/index\.js/,
+  //     path.resolve(__dirname, "components/HomeTTT.js")
+  //   )
+  // );
+
   config.plugins.push(
-    new webpack.NormalModuleReplacementPlugin(
-      /.cache\/admin\/src\/pages\/HomePage\/index\.js/,
-      path.resolve(__dirname, "components/HomeTTT.js")
-    )
+    new webpack.DefinePlugin({
+      //All your custom ENVs that you want to use in frontend
+      CUSTOM_VARIABLES: {
+        STRAPI_ADMIN_BACKEND_URL: JSON.stringify(process.env.STRAPI_ADMIN_BACKEND_URL)
+      },
+    })
   );
 
   // Important: return the modified config

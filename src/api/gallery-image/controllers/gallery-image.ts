@@ -2,7 +2,7 @@
  * gallery-image controller
  */
 
-import { factories, MediaAttribute } from "@strapi/strapi";
+import { factories } from "@strapi/strapi";
 import { ApiGalleryImageGalleryImage } from "../../../../schemas";
 
 interface GalleryImageObjectSubset
