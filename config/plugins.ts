@@ -23,4 +23,10 @@ export default ({ env }) => ({
       },
     },
   },
+  "upload-plugin-cache": {
+    enabled: true,
+    config: {
+      maxAge: 86_400_000,
+    },
+  },
 });
