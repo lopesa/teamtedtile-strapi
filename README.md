@@ -1,57 +1,23 @@
-# 🚀 Getting started with Strapi
+# Team Ted Tile Strapi cms
 
-Strapi comes with a full featured [Command Line Interface](https://docs.strapi.io/developer-docs/latest/developer-resources/cli/CLI.html) (CLI) which lets you scaffold and manage your project in seconds.
+This project is a not much modified version of `yarn create strapi-app my-project` inside of a Docker container.
 
-### `develop`
+To create the Docker container I used the unofficial official instructions [here](https://docs.strapi.io/dev-docs/installation/cli#creating-a-strapi-project) as well as a few others that are the obvious ones that come up under a Google search
 
-Start your Strapi application with autoReload enabled. [Learn more](https://docs.strapi.io/developer-docs/latest/developer-resources/cli/CLI.html#strapi-develop)
+Not a whole lot has been modified from the original Strapi create command, but a review of the few commits would show installation of some common Strapi plugins, etc.
 
-```
-npm run develop
-# or
-yarn develop
-```
+This repo could be taken as an example but not as boilerplate in its own right, the recommended process at that link is more to create a strapi app and then wrap it in the Docker image, and in that process you create the db passwords etc, which you would be missing from this instance.
 
-### `start`
-
-Start your Strapi application with autoReload disabled. [Learn more](https://docs.strapi.io/developer-docs/latest/developer-resources/cli/CLI.html#strapi-start)
-
-```
-npm run start
-# or
-yarn start
-```
-
-### `build`
-
-Build your admin panel. [Learn more](https://docs.strapi.io/developer-docs/latest/developer-resources/cli/CLI.html#strapi-build)
-
-```
-npm run build
-# or
-yarn build
-```
-
-## ⚙️ Deployment
-
-Strapi gives you many possible deployment options for your project. Find the one that suits you on the [deployment section of the documentation](https://docs.strapi.io/developer-docs/latest/setup-deployment-guides/deployment.html).
-
-## 📚 Learn more
-
-- [Resource center](https://strapi.io/resource-center) - Strapi resource center.
-- [Strapi documentation](https://docs.strapi.io) - Official Strapi documentation.
-- [Strapi tutorials](https://strapi.io/tutorials) - List of tutorials made by the core team and the community.
-- [Strapi blog](https://docs.strapi.io) - Official Strapi blog containing articles made by the Strapi team and the community.
-- [Changelog](https://strapi.io/changelog) - Find out about the Strapi product updates, new features and general improvements.
-
-Feel free to check out the [Strapi GitHub repository](https://github.com/strapi/strapi). Your feedback and contributions are welcome!
-
-## ✨ Community
-
-- [Discord](https://discord.strapi.io) - Come chat with the Strapi community including the core team.
-- [Forum](https://forum.strapi.io/) - Place to discuss, ask questions and find answers, show your Strapi project and get feedback or just talk with other Community members.
-- [Awesome Strapi](https://github.com/strapi/awesome-strapi) - A curated list of awesome things related to Strapi.
+The strapi run commands are in the two Docker files. I am starting/stopping the app simply then with `docker-compose up/down`
 
 ---
 
-<sub>🤫 Psst! [Strapi is hiring](https://strapi.io/careers).</sub>
+### Note for myself, for using this for TTT.
+
+workflow for changing Strapi code and building a new docker image has been to build the Docker image locally and then push it to my Digital Ocean image repo. Building on the remote server swamped that server. The command look like this:
+
+```
+docker build --no-cache --platform linux/amd64 -t teamtedtile-cms-api:latest -f Dockerfile.prod .
+docker tag teamtedtile-cms-api <remote container registry>/<folder-in-remote-repo>/teamtedtile-cms-api
+docker push <remote container registry>/<folder-in-remote-repo>/teamtedtile-cms-api
+```
