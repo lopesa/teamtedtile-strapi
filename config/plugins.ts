@@ -34,8 +34,8 @@ export default ({ env }) => ({
     config: {
       deployHook: env("VERCEL_DEPLOY_HOOK"),
       apiToken: env("VERCEL_TOKEN"),
-      appFilter: "teamtedtile",
-      // teamFilter: "your-team-id-on-vercel",
+      appFilter: env("VERCEL_APP"),
+      teamFilter: env("VERCEL_TEAM"),
       roles: ["strapi-super-admin", "strapi-editor", "strapi-author"],
     },
   },
