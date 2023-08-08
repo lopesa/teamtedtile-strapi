@@ -19,7 +19,8 @@
     "next": "^13.4.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "strapi-middleware-upload-plugin-cache": "^2.1.0"
+    "strapi-middleware-upload-plugin-cache": "^2.1.0",
+    "strapi-plugin-vercel-deploy": "^1.4.0"
   },
   "author": {
     "name": "Tony Lopes"

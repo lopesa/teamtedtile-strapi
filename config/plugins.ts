@@ -29,4 +29,14 @@ export default ({ env }) => ({
       maxAge: 86_400_000,
     },
   },
+  "vercel-deploy": {
+    enabled: true,
+    config: {
+      deployHook: env("VERCEL_DEPLOY_HOOK"),
+      apiToken: env("VERCEL_TOKEN"),
+      appFilter: "teamtedtile",
+      // teamFilter: "your-team-id-on-vercel",
+      roles: ["strapi-super-admin", "strapi-editor", "strapi-author"],
+    },
+  },
 });
