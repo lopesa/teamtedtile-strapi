@@ -75,18 +75,20 @@ export default factories.createCoreController(
   ({ strapi }) => ({
     async find(ctx) {
       // 1 - find all entries and order by forceOrder then ID
-      const entries: GalleryImageObjectSubset[] =
-        await strapi.entityService.findMany(
-          "api::gallery-image.gallery-image",
-          {
-            sort: { createdAt: "ASC" },
-            fields: ["title", "copyright", "forceOrder", "tedHeadTextRich"],
-            populate: "image",
-            publicationState: "live",
-          }
-        );
+      // const entries: GalleryImageObjectSubset[] =
+      const entries = await strapi.entityService.findMany(
+        "api::gallery-image.gallery-image",
+        {
+          sort: { createdAt: "asc" },
+          fields: ["title", "copyright", "forceOrder", "tedHeadTextRich"],
+          populate: "image",
+          publicationState: "live",
+        }
+      );
 
       // @TODO orderEntries can probably be replaced with dql or strapi multiple field ordering
+
+      // @ts-ignore
       const orderedEntries = orderEntries(entries);
 
       // parse entries for return (only send select props. add next/previous)

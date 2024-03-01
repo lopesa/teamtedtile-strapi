@@ -11,10 +11,10 @@
     "strapi": "strapi"
   },
   "dependencies": {
-    "@strapi/plugin-i18n": "4.11.4",
-    "@strapi/plugin-users-permissions": "4.11.4",
-    "@strapi/provider-email-sendgrid": "4.11.4",
-    "@strapi/strapi": "4.11.4",
+    "@strapi/plugin-i18n": "4.14.0",
+    "@strapi/plugin-users-permissions": "4.14.0",
+    "@strapi/provider-email-sendgrid": "4.14.0",
+    "@strapi/strapi": "4.14.0",
     "mysql": "2.18.1",
     "next": "^13.4.8",
     "react": "^18.2.0",
