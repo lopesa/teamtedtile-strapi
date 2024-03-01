@@ -19,14 +19,14 @@ module.exports = (config, webpack) => {
   //   )
   // );
 
-  config.plugins.push(
-    new webpack.DefinePlugin({
-      //All your custom ENVs that you want to use in frontend
-      CUSTOM_VARIABLES: {
-        STRAPI_ADMIN_BACKEND_URL: JSON.stringify(process.env.STRAPI_ADMIN_BACKEND_URL)
-      },
-    })
-  );
+  // config.plugins.push(
+  //   new webpack.DefinePlugin({
+  //     //All your custom ENVs that you want to use in frontend
+  //     CUSTOM_VARIABLES: {
+  //       STRAPI_ADMIN_BACKEND_URL: JSON.stringify(process.env.STRAPI_ADMIN_BACKEND_URL)
+  //     },
+  //   })
+  // );
 
   // Important: return the modified config
   return config;
